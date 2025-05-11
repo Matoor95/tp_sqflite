@@ -30,7 +30,7 @@ class Databaseclient {
     CREATE TABLE list (
     id INTEGER PRIMARY KEY ,
 
-    nom TEXT NOT NULL
+    name TEXT NOT NULL
 
     )
     ''');
@@ -53,11 +53,36 @@ class Databaseclient {
     List<Map<String, dynamic>> mapList = await db.rawQuery(query);
     return mapList.map((map) => ItemList.fromMap(map)).toList();
   }
+
 // function pour recuperer les articles d'un list
   Future<List<Article>> articlesFromId(int id) async {
     Database db = await database;
     List<Map<String, dynamic>> mapList =
         await db.query('article', where: 'list=?', whereArgs: [id]);
-        return mapList.map((map)=>Article.fromMap(map)).toList();
+    return mapList.map((map) => Article.fromMap(map)).toList();
+  }
+
+  //function pour ajouter une list sur ma table list
+  Future<bool> addItemList(String text) async {
+    Database db = await database;
+    await db.insert('list', {"name": text});
+    return true;
+  }
+
+  Future<bool> upsert(Article article) async {
+    Database db = await database;
+    (article.id == null)
+        ? article.id = await db.insert('article', article.toMap())
+        : await db.update('article', article.toMap(),
+            where: 'id= ?', whereArgs: [article.id]);
+    return true;
+  }
+
+  Future<bool> removeItem(ItemList itemList) async {
+    Database db = await database;
+    await db.delete('list', where: 'id =?', whereArgs: [itemList.id]);
+    //supprimer aussi tous les articles liees
+    await db.delete('article', where: 'list = ?', whereArgs: [itemList.id]);
+    return true;
   }
 }
