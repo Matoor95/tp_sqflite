@@ -68,7 +68,7 @@ class Databaseclient {
     await db.insert('list', {"name": text});
     return true;
   }
-
+// function qui permet d'ajouter oun supprimer une article
   Future<bool> upsert(Article article) async {
     Database db = await database;
     (article.id == null)
