@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tp_sqflite/Pages/Home.dart';
+import 'package:tp_sqflite/Views/Pages/Home.dart';
 
 void main() {
   runApp(const MyApp());

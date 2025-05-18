@@ -5,7 +5,7 @@ class AddTextField extends StatelessWidget {
   TextEditingController controller;
   TextInputType type;
   AddTextField(
-      {required this.hint, required this.controller, required this.type});
+      {required this.hint, required this.controller,  this.type=TextInputType.text});
 
   @override
   Widget build(BuildContext context) {
